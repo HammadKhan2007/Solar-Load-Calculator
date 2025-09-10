@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solar Load Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-2xl">
+    <h1 class="text-2xl font-bold mb-4 text-center">Solar Load Calculator</h1><div class="space-y-4">
+  <!-- Tube Light -->
+  <div>
+    <label class="block font-medium">No. of Tube Lights</label>
+    <input id="tubeLights" type="number" class="w-full border rounded-lg p-2" value="0" min="0">
+    <p class="text-sm text-gray-500">1 Tube Light = 30W</p>
+  </div>
+
+  <!-- Fans -->
+  <div>
+    <label class="block font-medium">No. of Fans</label>
+    <input id="fans" type="number" class="w-full border rounded-lg p-2" value="0" min="0">
+    <p class="text-sm text-gray-500">1 Fan = 75W</p>
+  </div>
+
+  <!-- LED Bulbs -->
+  <div>
+    <label class="block font-medium">No. of LED Bulbs</label>
+    <input id="bulbs" type="number" class="w-full border rounded-lg p-2" value="0" min="0">
+    <p class="text-sm text-gray-500">1 LED Bulb = 12W</p>
+  </div>
+
+  <!-- TV -->
+  <div>
+    <label class="block font-medium">No. of TVs</label>
+    <input id="tv" type="number" class="w-full border rounded-lg p-2" value="0" min="0">
+    <p class="text-sm text-gray-500">1 TV = 100W</p>
+  </div>
+
+  <!-- Refrigerator -->
+  <div>
+    <label class="block font-medium">No. of Refrigerators</label>
+    <input id="fridge" type="number" class="w-full border rounded-lg p-2" value="0" min="0">
+    <p class="text-sm text-gray-500">1 Fridge ≈ 120W</p>
+  </div>
+</div>
+
+<!-- Results -->
+<div class="mt-6 p-4 bg-gray-50 rounded-lg border">
+  <p class="text-lg font-semibold">Total Home Load: <span id="totalLoad">0</span> W</p>
+  <p class="text-lg font-semibold">Required Solar System: <span id="solarSize">0</span> kW</p>
+</div>
+
+  </div>  <script>
+    const tubeEl = document.getElementById('tubeLights');
+    const fanEl = document.getElementById('fans');
+    const bulbEl = document.getElementById('bulbs');
+    const tvEl = document.getElementById('tv');
+    const fridgeEl = document.getElementById('fridge');
+
+    const totalLoadEl = document.getElementById('totalLoad');
+    const solarSizeEl = document.getElementById('solarSize');
+
+    const FACTORS = {
+      tube: 30,
+      fan: 75,
+      bulb: 12,
+      tv: 100,
+      fridge: 120
+    };
+
+    function calculate() {
+      const tubeLoad = (+tubeEl.value || 0) * FACTORS.tube;
+      const fanLoad = (+fanEl.value || 0) * FACTORS.fan;
+      const bulbLoad = (+bulbEl.value || 0) * FACTORS.bulb;
+      const tvLoad = (+tvEl.value || 0) * FACTORS.tv;
+      const fridgeLoad = (+fridgeEl.value || 0) * FACTORS.fridge;
+
+      const total = tubeLoad + fanLoad + bulbLoad + tvLoad + fridgeLoad;
+      totalLoadEl.textContent = total;
+
+      const solarKW = (total * 1.5) / 1000; // 1.5 safety factor
+      solarSizeEl.textContent = solarKW.toFixed(2);
+    }
+
+    [tubeEl, fanEl, bulbEl, tvEl, fridgeEl].forEach(el => el.addEventListener('input', calculate));
+  </script></body>
+</html>
